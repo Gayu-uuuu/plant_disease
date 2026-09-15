@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PlantDx | Plant Disease Intelligence</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f9f7;
+            color: #172019;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e9e5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: #1f7a45;
+            color: white;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-name span {
+            color: #1f7a45;
+        }
+
+        .status {
+            font-size: 13px;
+            color: #55705d;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background: #35a763;
+            border-radius: 50%;
+        }
+
+        /* MAIN */
+        main {
+            width: 90%;
+            max-width: 900px;
+            margin: 55px auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 38px;
+        }
+
+        .eyebrow {
+            color: #1f7a45;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 42px;
+            letter-spacing: -1.5px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: #68736b;
+            font-size: 16px;
+            max-width: 600px;
+            margin: auto;
+            line-height: 1.6;
+        }
+
+        /* UPLOAD */
+        .upload-card {
+            background: white;
+            border: 1px solid #e1e7e2;
+            border-radius: 18px;
+            padding: 42px;
+            box-shadow: 0 8px 30px rgba(20, 40, 25, 0.06);
+        }
+
+        .upload-area {
+            border: 1.5px dashed #a9b9ad;
+            border-radius: 13px;
+            padding: 42px 20px;
+            text-align: center;
+            background: #fbfdfb;
+        }
+
+        .upload-icon {
+            width: 52px;
+            height: 52px;
+            margin: auto;
+            background: #eaf5ed;
+            color: #1f7a45;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            margin-bottom: 18px;
+        }
+
+        .upload-area h2 {
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .upload-area p {
+            color: #7a847d;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 20px;
+            padding: 11px;
+            border: 1px solid #d8ded9;
+            border-radius: 8px;
+            background: white;
+            font-size: 13px;
+        }
+
+        button {
+            border: none;
+            background: #1f7a45;
+            color: white;
+            padding: 13px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #176337;
+            transform: translateY(-1px);
+        }
+
+        /* RESULTS */
+        .results {
+            margin-top: 30px;
+            background: white;
+            border: 1px solid #e1e7e2;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(20, 40, 25, 0.05);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .results-header h2 {
+            font-size: 20px;
+        }
+
+        .results-header span {
+            font-size: 12px;
+            color: #657168;
+            background: #f0f4f1;
+            padding: 6px 10px;
+            border-radius: 20px;
+        }
+
+        .top-result {
+            background: #eef8f1;
+            border: 1px solid #cce6d3;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 18px;
+        }
+
+        .top-label {
+            font-size: 11px;
+            color: #43805a;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 9px;
+        }
+
+        .top-result-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .top-result-confidence {
+            color: #287341;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .prediction {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid #edf0ed;
+        }
+
+        .prediction:last-child {
+            border-bottom: none;
+        }
+
+        .prediction-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .prediction-score {
+            font-size: 14px;
+            font-weight: 700;
+            color: #39734c;
+        }
+
+        .disclaimer {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid #edf0ed;
+            color: #7b837d;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            color: #89928b;
+            font-size: 12px;
+            padding: 10px 0 35px;
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 0 5%;
+            }
+
+            .status {
+                display: none;
+            }
+
+            main {
+                margin-top: 35px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .upload-card {
+                padding: 20px;
+            }
+
+            .results {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="brand">
+        <div class="brand-icon">🌿</div>
+
+        <div class="brand-name">
+            Plant<span>Dx</span>
+        </div>
+    </div>
+
+    <div class="status">
+        <div class="status-dot"></div>
+        AI Model Online
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="eyebrow">
+            Plant Disease Intelligence
+        </div>
+
+        <h1>
+            Identify plant diseases<br>
+            from a single leaf.
+        </h1>
+
+        <p>
+            Upload a leaf image and our AI model analyzes its visual
+            characteristics to identify the most likely plant disease.
+        </p>
+
+    </section>
+
+
+    <!-- UPLOAD -->
+
+    <section class="upload-card">
+
+        <div class="upload-area">
+
+            <div class="upload-icon">
+                ↑
+            </div>
+
+            <h2>
+                Upload a leaf image
+            </h2>
+
+            <p>
+                Use a clear image with the leaf clearly visible
+            </p>
+
+            <form method="POST" enctype="multipart/form-data">
+
+                <input
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    required
+                >
+
+                <button type="submit">
+                    Analyze Image
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESULTS -->
+
+    {% if prediction %}
+
+    <section class="results">
+
+        <div class="results-header">
+
+            <h2>Analysis Results</h2>
+
+            <span>Top predictions</span>
+
+        </div>
+
+
+        <!-- TOP PREDICTION -->
+
+        <div class="top-result">
+
+            <div class="top-label">
+                Most likely condition
+            </div>
+
+            <div class="top-result-name">
+                {{ prediction[0].label }}
+            </div>
+
+            <div class="top-result-confidence">
+                {{ "%.2f"|format(prediction[0].score * 100) }}% confidence
+            </div>
+
+        </div>
+
+
+        <!-- OTHER PREDICTIONS -->
+
+        {% for item in prediction[1:] %}
+
+        <div class="prediction">
+
+            <div class="prediction-name">
+                {{ item.label }}
+            </div>
+
+            <div class="prediction-score">
+                {{ "%.2f"|format(item.score * 100) }}%
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+
+        <div class="disclaimer">
+            <strong>Important:</strong>
+            This system provides AI-based screening and is not a substitute
+            for professional agricultural diagnosis.
+        </div>
+
+    </section>
+
+    {% endif %}
+
+</main>
+
+
+<footer>
+    PlantDx · AI-powered plant disease screening
+</footer>
+
+</body>
+</html>
